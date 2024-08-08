@@ -11,23 +11,34 @@ Game::Game()
     for (int x = 0; x < 20; x++)
         resultLottery[x] = 0;
 }
+//--------------------------------
 void Game::checkResultGame() 
+///--------------------------------
 {
+    LogicGame::oneLotteryResult(); 
     
-    startMoney = startMoney - (stawka * 100); // minus stawka
 
+    startMoney = startMoney - rateLos; // minus stawka
+        
     for (int i = 0; i < 20; i++)
     {
-        checkPayLineAndSet(i, tabSignWin);
-        // checkPayLine(i);
-        resultLottery[i] = bonusValue(tabWin[i][0], tabWin[i][1]);
-        endResultLottery += resultLottery[i];
+        resultLottery[i] = rateLos * tabWin[i][2];   // result one pay line one lottery
+        endResultLottery = endResultLottery + resultLottery[i];       // result all pay line one lottery
     }
-    cout << " Wygrana : " << endResultLottery << endl;
+    endResultLottery = endResultLottery - rateLos;
 
+    loseResult = loseResult + rateLos;
+    winResult  =  winResult + endResultLottery;
+
+
+    cout << " Wygrana : " << endResultLottery << endl;
+    cout << " Stracone_Pieniadze : " << loseResult << endl;
+    cout << " Wygrane_Pieniadze  : " << winResult << endl;
+    
     startMoney = startMoney + endResultLottery; // suma w portfelu
+
 #ifdef DEBUG
-    for (int j = 0; j < 20; j++)S
+    for (int j = 0; j < 20; j++)
     {
         endResultLottery += resultLottery[j];
         cout << " Tab[" << j << "]: " << resultLottery[j] << endl;
@@ -61,19 +72,19 @@ void Game::showLotteryResult()
     }
     printf("\n");
 }
-void Game::setRate(int rate)
+void Game::setRate(double rate)
 {
-    stawka = rate;
+    rateLos = rate;
 }
-int Game::getRate()
+double Game::getRate()
 {
-    return stawka;
+    return rateLos;
 }
-void Game::setStartMoney(int money)
+void Game::setStartMoney(double money)
 {
   startMoney = money;
 }
-int Game::getStartMoney()
+double Game::getStartMoney()
 {
     return startMoney;
 }
@@ -85,42 +96,3 @@ int  Game::getLoopGame()
 {
     return loopGame;
 }
-//void Gra::checkWin()
-//{
-//    startMoney = startMoney - (stawka * 100); // minus stawka
-//
-//    for (int j = 0; j < 20; j++)
-//    { 
-//        if (0 < checkWinLottery(j, dane)) 
-//        {
-//            resultLottery[j] = checkWinLottery(j, dane);
-//            endResultLottery += resultLottery[j];
-//        }
-//    }
-//    cout << " Wygrana : " << endResultLottery << endl;
-//
-//    startMoney = startMoney + endResultLottery; // suma w portfelu
-//
-//#ifdef DEBUG
-//    for (int j = 0; j < 20; j++)S
-//    {
-//        endResultLottery += resultLottery[j];
-//        cout << " Tab[" << j << "]: " << resultLottery[j] << endl;
-//    }
-//#endif 
-//}
-//void Gra::printGame()
-//{
-//    cout << "  Uklad gry \n";
-//    cout << "Twoje pieniazki : "<< startMoney <<"\n";
-//
-//    for (size_t i = 0; i < dane.size(); i++)
-//    {
-//        if (i == 5 || i == 10)
-//        {
-//            printf("\n");
-//        }
-//        printf("%d, ", dane[i]);
-//    }
-//    printf("\n");
-//}

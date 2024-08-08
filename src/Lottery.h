@@ -1,11 +1,11 @@
 
 #include <iostream>
 #include <vector>
-#define ROW 3
-#define COL 5 
-#define SYM 8
-#define PAY_LINE 20
-#define RATE 9
+// #define ROW 3
+// #define COL 5 
+// #define SYM 8
+// #define PAY_LINE 20
+// #define RATE 9
 //#define DEBUG 
 
 using namespace std;
@@ -15,10 +15,10 @@ public:
 	static  constexpr int NR_COLUMN = 5;
 	static  constexpr int NR_ROW = 3;
 	static  constexpr int NR_SYMBOLS = 8;
-	static  constexpr int NR_PAY_LINE = 20;
+	static  constexpr int NR_PAY_LINE = 21;//20+scatter
 	static  constexpr int NR_RATE = 9;
 
-// private:
+private:
 	int volatilitTab[NR_COLUMN][NR_SYMBOLS] =
 	{
 		{ 2, 20, 15, 10, 10,  5, 5, 1 },// roll 1
@@ -30,7 +30,7 @@ public:
 	vector < int > volatilit[NR_COLUMN];
 	void setValueVector(int Sign,int numberTick,  int numberRolls);
 
-// protected:
+protected:
 
 	int lotteryResultTab[NR_COLUMN][NR_ROW];
 

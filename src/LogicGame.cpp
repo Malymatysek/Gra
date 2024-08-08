@@ -3,18 +3,42 @@
 
 LogicGame::LogicGame()
 {
-    init();
-}
-
-void LogicGame::init()
-{
-    for (int i = 0; i < 20; i++)
+   for (int i = 0; i < 20; i++)
         for (int j = 0; j < 2; j++)
             tabWin[i][j] = 0;
 }
-void LogicGame::checkScatter(int iterator)
+//--------------------------------------
+void LogicGame::oneLotteryResult()
+//--------------------------------------
 {
-    scatterNr = 0;
+    Lottery::startLottery();            //losowanie
+    checkScatter();                     //szukanie scatter
+    for (int i = 0; i < 20; i++)
+    {
+            checkPayLine(i);            //przeglad wyszskich lini wygrywajacych
+    }     
+}
+//--------------------------------------
+void LogicGame::staticTabCheck(vector<int> tab)
+{//podaj vector statycznego losowania size[15]
+for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            if( i == 0 ) lotteryResultTab[i][j] = tab[j];
+            if( i == 1 ) lotteryResultTab[i][j] = tab[j+5];
+            if( i == 2 ) lotteryResultTab[i][j] = tab[j+10];
+        }
+    }
+    checkScatter();                     //szukanie scatter
+    for (int i = 0; i < 20; i++)
+    {
+            checkPayLine(i);            //przeglad wyszskich lini wygrywajacych
+    }     
+}
+void LogicGame::checkScatter()
+{
+    int scatterNr = 0;
     for (int i = 0; i < 5; i++)
     {
         for (int j = 0; j < 3; j++)
@@ -27,16 +51,19 @@ void LogicGame::checkScatter(int iterator)
         }
 
     }
-
-    bonusValue(0, scatterNr);
+    tabWin[0][0]= 0;
+    tabWin[0][1]= scatterNr;
+    tabWin[0][2]= getMoneyLine(0,scatterNr);
 
 #ifdef DEBUG 
-    cout << "Tab[" << iterator << "] = " << 0 << "\n";
-    cout << "Tab[" << iterator << "] = " << scatterNr << "\n";
+    cout << "Tab[" << 0 << "]Sign = " << tabWin[0][0] << "\n";
+    cout << "Tab[" << 0 << "]   X = " << tabWin[0][1] << "\n";
+    cout << "Tab[" << 0 << "] Win = " << tabWin[0][2] << "\n";
 #endif
 }
-void LogicGame::checkPayLineAndSet(int iterator, int *tabSignWin)
+void LogicGame::checkPayLine(int iterator)
 {
+
     int paySign;
     int multiplier;
 
@@ -59,140 +86,91 @@ void LogicGame::checkPayLineAndSet(int iterator, int *tabSignWin)
              }
          }
     }
-    tabSignWin[0] = paySign;
-    tabSignWin[1] = multiplier;
-
+    
     tabWin[iterator][0] = paySign;
     tabWin[iterator][1] = multiplier;
+    tabWin[iterator][2] = getMoneyLine(paySign,multiplier);
+
 #ifdef DEBUG 
-    cout << "Tab[" << iterator << "] = " << paySign << "\n";
-    cout << "Tab[" << iterator << "] = " << multiplier << "\n";
+    cout << "Tab[" << iterator << "]Sign = " << tabWin[iterator][0] << "\n";
+    cout << "Tab[" << iterator << "]   X = " << tabWin[iterator][1] << "\n";
+    cout << "Tab[" << iterator << "] Win = " << tabWin[iterator][2] << "\n";
    #endif
 }
 double LogicGame::getMoneyLine(int symbol_win, int multiplier_win) 
 {
+    #ifdef DEBUG 
+    cout << "stawka "<< Rates[multiplier_win][symbol_win] << "\n";
+   #endif
     return Rates[multiplier_win][symbol_win];
 }
-void LogicGame::checkPayLine(int iterator)
-{
-    int paySign;
-    int multiplier;
+// void LogicGame::checkPayLine(int iterator)
+// {
+//     int paySign;
+//     int multiplier;
 
-    for (int i = 0; i < 5; i++)
-    {
-         if (i == 0)
-         {
-             paySign = lotteryResultTab[i][PayLine[iterator][i] - 1]; // win place in first roll
-             multiplier = i + 1;
-         }
-         else
-         {
-             if (paySign == lotteryResultTab[i][PayLine[iterator][i] - 1])// next sign is the same?
-             {
-                 multiplier = i + 1; // win
-             }
-             else
-             {
-                 break;     // end
-             }
-         }
-    }
-    tabWin[iterator][0] = paySign;
-    tabWin[iterator][1] = multiplier;
-#ifdef DEBUG 
-    cout << "Tab[" << iterator << "] = " << paySign << "\n";
-    cout << "Tab[" << iterator << "] = " << multiplier << "\n";
-   #endif
-}
-int LogicGame::bonusValue(int symbol_win, int multiplier_win)
-{
-    if ((symbol_win == SIGN::GRAPES) || (symbol_win == SIGN::WATERLEMON))
-    {
-        if (multiplier_win == BONUS::_x5) 
-        { 
-            return WinningRates[WIN_RATES::Val_25];  
-        }  //25 
-        if (multiplier_win == BONUS::_x4)
-        { 
-            return  WinningRates[WIN_RATES::Val_10];
-        } //10
-        if (multiplier_win == BONUS::_x3) 
-        { 
-            return WinningRates[WIN_RATES::Val_2_5];
-        } //2.5 
-    }
-    else if (symbol_win == SIGN::SEVEN)
-    {
-        if (multiplier_win == BONUS::_x5) 
-        { 
-            return  WinningRates[WIN_RATES::Val_250];
-        }   //250 
-        if (multiplier_win == BONUS::_x4) 
-        { 
-            return  WinningRates[WIN_RATES::Val_50];
-        }  //50 
-        if (multiplier_win == BONUS::_x3) 
-        { 
-            return  WinningRates[WIN_RATES::Val_5]; 
-        }   //5 
-    }
-    else if (symbol_win == SIGN::SCATTER)
-    {
-        if (multiplier_win == BONUS::_x5) 
-        { 
-            return  WinningRates[WIN_RATES::Val_50];
-        } //50 
-        if (multiplier_win == BONUS::_x4) 
-        { 
-            return  WinningRates[WIN_RATES::Val_10]; 
-        } //10
-        if (multiplier_win == BONUS::_x3) 
-        { 
-            return  WinningRates[WIN_RATES::Val_2]; 
-        } //2 
-    }
-   // if (symbol_win == (SIGN::CHERRY || SIGN::LEMON || SIGN::ORANGE || SIGN::PLUM))
-    else
-    {
-        if (multiplier_win == BONUS::_x5) 
-        { 
-            return  WinningRates[WIN_RATES::Val_10];
-        }    //10 
-        if (multiplier_win == BONUS::_x4) 
-        { 
-            return WinningRates[WIN_RATES::Val_2_5];
-        }    //2.5 
-        if (multiplier_win == BONUS::_x3) 
-        { 
-            return  WinningRates[WIN_RATES::Val_1];
-        }     //1 
-        if (multiplier_win == BONUS::_x2 && SIGN::CHERRY == symbol_win) 
-        { 
-            return  WinningRates[WIN_RATES::Val_0_25];
-        }  //0.25
-    }
-    return 0;
-} 
+//     for (int i = 0; i < 5; i++)
+//     {
+//          if (i == 0)
+//          {
+//              paySign = lotteryResultTab[i][PayLine[iterator][i] - 1]; // win place in first roll
+//              multiplier = i + 1;
+//          }
+//          else
+//          {
+//              if (paySign == lotteryResultTab[i][PayLine[iterator][i] - 1])// next sign is the same?
+//              {
+//                  multiplier = i + 1; // win
+//              }
+//              else
+//              {
+//                  break;     // end
+//              }
+//          }
+//     }
+//     tabWin[iterator][0] = paySign;
+//     tabWin[iterator][1] = multiplier;
+// #ifdef DEBUG 
+//     cout << "Tab[" << iterator << "] = " << paySign << "\n";
+//     cout << "Tab[" << iterator << "] = " << multiplier << "\n";
+//    #endif
+// }
 void LogicGame::showWinLine()
 {
-    for (int i = 0; i < 20; ++i)
+   for (int i = 0; i < 20; ++i)
     {
-        std::cout << "Layer " << i << ":" << std::endl;
-        for (int j = 0; j < 3; ++j)
-        {
-            for (int k = 0; k < 5; ++k)
-            {
-                if (CheckLineWin[i][j][k] == 0)
+        for (int k = 0; k < 5; ++k)
+            {                
+                if (PayLine[i][k] == 0)
                 {
-                    cout << CheckLineWin[i][j][k] << " ";
+                    cout << PayLine[i][k] << " ";
                 }
                 else
-                    cout << "\033[41m" << CheckLineWin[i][j][k] << " ";
+                    cout << "\033[41m" << PayLine[i][k] << " ";
                     cout << "\033[0m";
             }
-            cout << "\n";
-        }
-        cout << "\n";
-    }
+    } 
 }
+// void LogicGame::showWinLine()
+// {
+//     for (int i = 0; i < 20; ++i)
+//     {
+//         std::cout << "Layer " << i << ":" << std::endl;
+//         for (int j = 0; j < 3; ++j)
+//         {
+//             for (int k = 0; k < 5; ++k)
+//             {
+//                 if (CheckLineWin[i][j][k] == 0)
+//                 {
+//                     cout << CheckLineWin[i][j][k] << " ";
+//                 }
+//                 else
+//                     cout << "\033[41m" << CheckLineWin[i][j][k] << " ";
+//                     cout << "\033[0m";
+//             }
+//             cout << "\n";
+//         }
+//         cout << "\n";
+//     }
+// }
 

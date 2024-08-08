@@ -14,20 +14,15 @@ class Game : public LogicGame
 {
 private:
 
-    int resultLottery[20];
-    int stawka              = 1;
-    int loopGame            = 1;
-    int startMoney          = 10000;
-    int endResultLottery    = 0;
-   
+    int loopGame                = 1;
+    double resultLottery[20];
+    double rateLos              = 20;
+    double startMoney           = 10000;
+    double endResultLottery     = 0;
+    double loseResult           = 0;
+    double winResult            = 0;
 public:
-    struct Statistics
-    {
-        int winNumber;
-        int RTP;
-        int tabSignWin_Rate[2];
-    };
-    int tabSignWin[2];
+
     Game();
     void    setStatiscic();
     void    checkResultGame();
@@ -36,19 +31,19 @@ public:
     void    showLotteryResult(); 
     void    showWinLine();
     
-    void    setRate(int rate);
-    int     getRate();
+    void    setRate(double rate);
+    double  getRate();
 
-    void    setStartMoney(int money);
-    int     getStartMoney();
+    void    setStartMoney(double money);
+    double  getStartMoney();
     
     void    setLoopGames(int loop);
     int     getLoopGame();
 
-    Statistics& getStatistics() {
-        return stats;         // Zwracanie referencji do obiektu
-    }
-    private:
-    Statistics stats;
+    // Statistics& getStatistics() {
+    //     return stats;         // Zwracanie referencji do obiektu
+    // }
+    // private:
+    // Statistics stats;
 };
 

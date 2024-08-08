@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     srand ( time(0) );
     Game start;
     fstream plik; 
-
+    vector<int> tab;
     int loop = 0;
     bool exit = false;
     int gamesCount = 10;
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     
     headText();
 
-    start.setRate(10);
+    start.setRate(20);
     start.setLoopGames(gamesCount);
     start.setStartMoney(startCredit);
     plik.clear();
@@ -62,8 +62,20 @@ int main(int argc, char *argv[])
         if (strcmp(argv[i], "-creditOutFile") == 0 && i + 1 < argc) {
             creditOutFile = argv[i + 1];
         }
+        if (strcmp(argv[i], "-symbols") == 0 && i + 1 < argc) {
+            tab.push_back(atoi(argv[i + 1]));
+        } 
     }
-//tu kod usuwający zawartosc plik.txt
+    if(tab.max_size()>0){
+
+    cout << "TabelaConvert\n ";
+	for (int i = 0; i < 15; i++) {
+		if (i == 5 || i == 10)
+			printf("\n");
+		cout << tab[i]<<", ";
+	}
+    }
+    //tu kod usuwający zawartosc plik.txt
     plik.open(creditOutFile, ios::out | ios::trunc);
     if (plik) {
         plik.close(); // Zamknięcie pliku, aby usunąć zawartość
@@ -78,16 +90,14 @@ int main(int argc, char *argv[])
     {
         for (int i = 0; i < gamesCount; i++)
         {
-            
-            start.startLottery();       // losowanie 
-            start.checkResultGame();    // sprawdzanie
-            // STATY
-            // start.getStatistics().tabSignWin[1];
-            // start.getStatistics().tabSignWin[1];
-            // start.getStatistics().RTP;
-            // start.getStatistics().winNumber;
+            if(/*statycznaTablica*/false)
+            {
+                start.staticTabCheck(tab);
+            }
+            else
 
-            // tutaj pozostałe pieniądze startCredit - rateGame
+            start.checkResultGame() ;
+
             plik << "Liczba gier["<<i<<"] " 
                  << " posiadany kredyt : " << start.getStartMoney() << endl ;       
         }

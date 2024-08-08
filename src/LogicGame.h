@@ -2,14 +2,14 @@
 #include <vector>
 #include "Lottery.h"
 
-//#define DEBUG
+// #define DEBUG
 using namespace std;
 
 class LogicGame : public Lottery
 {
 public:
-	int tabWin[NR_PAY_LINE][2];
-	int scatterNr;
+	int tabWin[NR_PAY_LINE][3]; // 0 sign / 1 multiplier/ 2 rate
+	
 
 private:
 	enum WIN_RATES
@@ -50,8 +50,6 @@ static constexpr double Rates[5][8] = {
 { 10.00,  2.50, 2.50,   2.50,  2.50, 10.00, 10.00,  50.00 },//x4
 { 50.00, 10.00, 10.00, 10.00, 10.00, 25.00, 25.00, 250.00 } //x5
 };
-	static constexpr double WinningRates[9] = 
-	{ 0.25, 1.00, 2.50, 2.00, 5.00, 10.00, 25.00, 50.00, 250.00 };
 
 	static constexpr bool CheckLineWin[NR_PAY_LINE][NR_ROW][NR_COLUMN] =
 	{
@@ -185,13 +183,14 @@ public:
 
 	LogicGame();
 
-	void		init();
+	void 		oneLotteryResult(); //
 	void		showWinLine();
-	void		checkScatter(int iterator);
+
+	void		checkScatter();
 	void		checkPayLine(int iterator);
-	int			bonusValue(int symbol_win, int multiplier_win);
 
-	double getMoneyLine(int symbol_win, int multiplier_win);
-	void checkPayLineAndSet(int iterator, int *tabSignWin);
 
+	// void    checkPayLineAndSet(int iterator);
+	double  getMoneyLine(int symbol_win, int multiplier_win);
+	void 	staticTabCheck(vector<int> tab);
 };
