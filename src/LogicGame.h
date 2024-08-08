@@ -12,8 +12,48 @@ public:
 	int scatterNr;
 
 private:
-	static constexpr int WinningRates[9] = { 25, 100, 250, 200, 500, 1000, 2500, 5000, 25000 };// podziel przez 10
-	static constexpr bool	  CheckLineWin[NR_PAY_LINE][NR_ROW][NR_COLUMN] =
+	enum WIN_RATES
+	{
+		Val_0_25 = 0,
+		Val_1 = 1,
+		Val_2_5 = 2,
+		Val_2 = 3,
+		Val_5 = 4,
+		Val_10 = 5,
+		Val_25 = 6,
+		Val_50 = 7,
+		Val_250 = 8,
+	};
+	enum BONUS
+	{
+		_x2 = 2,
+		_x3 = 3,
+		_x4 = 4,
+		_x5 = 5,
+	};
+	enum SIGN
+	{
+		SCATTER = 0,
+		CHERRY = 1,
+		LEMON = 2,
+		ORANGE = 3,
+		PLUM = 4,
+		GRAPES = 5,
+		WATERLEMON = 6,
+		SEVEN = 7,
+	};
+static constexpr double Rates[5][8] = {
+//Scattrr/Cherry/lemon/orange//plum//grape/waterm/seven
+{     0,     0,    0,      0, 	  0,     0,     0,   0    },//x1
+{     0,  0.25,    0,      0,     0,     0,     0,   0    },//2
+{  2.00,  1.00, 1.00,   1.00,  1.00,  2.50,  2.50, 	 5.00 },//x3
+{ 10.00,  2.50, 2.50,   2.50,  2.50, 10.00, 10.00,  50.00 },//x4
+{ 50.00, 10.00, 10.00, 10.00, 10.00, 25.00, 25.00, 250.00 } //x5
+};
+	static constexpr double WinningRates[9] = 
+	{ 0.25, 1.00, 2.50, 2.00, 5.00, 10.00, 25.00, 50.00, 250.00 };
+
+	static constexpr bool CheckLineWin[NR_PAY_LINE][NR_ROW][NR_COLUMN] =
 	{
 		{
 			{0,0,0,0,0},
@@ -140,36 +180,6 @@ private:
 		{3,3,3,2,1},//19
 		{1,1,1,2,3} //20
 	};
-	enum WIN_RATES
-	{
-		Val_0_25 = 0,
-		Val_1 = 1,
-		Val_2_5 = 2,
-		Val_2 = 3,
-		Val_5 = 4,
-		Val_10 = 5,
-		Val_25 = 6,
-		Val_50 = 7,
-		Val_250 = 8,
-	};
-	enum BONUS
-	{
-		_x2 = 2,
-		_x3 = 3,
-		_x4 = 4,
-		_x5 = 5,
-	};
-	enum SIGN
-	{
-		SCATTER = 0,
-		CHERRY = 1,
-		LEMON = 2,
-		ORANGE = 3,
-		PLUM = 4,
-		GRAPES = 5,
-		WATERLEMON = 6,
-		SEVEN = 7,
-	};
 
 public:
 
@@ -179,12 +189,9 @@ public:
 	void		showWinLine();
 	void		checkScatter(int iterator);
 	void		checkPayLine(int iterator);
-	int	bonusValue(int symbol_win, int multiplier_win);
+	int			bonusValue(int symbol_win, int multiplier_win);
 
-
+	double getMoneyLine(int symbol_win, int multiplier_win);
 	void checkPayLineAndSet(int iterator, int *tabSignWin);
-	//void isWinline(/*int tab[5][3]*/);
-	/*int getWinTab();
-	uint32_t checkWinSymbolInLine();
-	uint32_t checkWinLottery(uint16_t iterator, vector <uint16_t> losy);*/
+
 };
