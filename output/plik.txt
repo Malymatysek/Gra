@@ -1,0 +1,10 @@
+Liczba gier[0]  posiadany kredyt : 9000
+Liczba gier[1]  posiadany kredyt : 8300
+Liczba gier[2]  posiadany kredyt : 10900
+Liczba gier[3]  posiadany kredyt : 48600
+Liczba gier[4]  posiadany kredyt : 86300
+Liczba gier[5]  posiadany kredyt : 124000
+Liczba gier[6]  posiadany kredyt : 161700
+Liczba gier[7]  posiadany kredyt : 200350
+Liczba gier[8]  posiadany kredyt : 239300
+Liczba gier[9]  posiadany kredyt : 278250
