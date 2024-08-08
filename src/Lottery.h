@@ -6,7 +6,8 @@
 // #define SYM 8
 // #define PAY_LINE 20
 // #define RATE 9
-//#define DEBUG 
+// #define DEBUG 
+
 
 using namespace std;
 class Lottery
@@ -21,11 +22,11 @@ public:
 private:
 	int volatilitTab[NR_COLUMN][NR_SYMBOLS] =
 	{
-		{ 2, 20, 15, 10, 10,  5, 5, 1 },// roll 1
-		{ 2, 20, 15 ,10, 10,  5, 5, 1 },// roll 2
-		{ 1, 30, 20, 15, 20, 15, 1, 1 },// roll 3
-		{ 1, 40, 30, 25, 20, 10, 1, 1 },// roll 4
-		{ 1, 50, 40, 30, 20, 10, 1, 1 } // roll 5
+		{ 5, 21,7, 7,  7,  3, 2, 2  },// roll 1
+		{ 3, 21,11, 7,  7,  2, 3, 2 },// roll 2
+		{ 5, 7, 9, 13, 6,  1, 1, 2  },// roll 3
+		{ 10, 3, 5, 2, 13,  3, 3, 2  },// roll 4
+		{ 10, 8, 3, 5,  2,  2, 2, 2  } // roll 5
 	};
 	vector < int > volatilit[NR_COLUMN];
 	void setValueVector(int Sign,int numberTick,  int numberRolls);
@@ -39,4 +40,7 @@ public:
 	Lottery();
 	void startLottery();
 };
+
+
+
 

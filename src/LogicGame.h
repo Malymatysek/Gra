@@ -8,9 +8,20 @@ using namespace std;
 class LogicGame : public Lottery
 {
 public:
-	int tabWin[NR_PAY_LINE][3]; // 0 sign / 1 multiplier/ 2 rate
+	int tabWin[NR_PAY_LINE][NR_ROW]; // 0 sign / 1 multiplier/ 2 rate
 	
 
+	enum SIGN
+	{
+		SCATTER = 0,
+		CHERRY = 1,
+		LEMON = 2,
+		ORANGE = 3,
+		PLUM = 4,
+		GRAPES = 5,
+		WATERLEMON = 6,
+		SEVEN = 7,
+	};
 private:
 	enum WIN_RATES
 	{
@@ -31,25 +42,22 @@ private:
 		_x4 = 4,
 		_x5 = 5,
 	};
-	enum SIGN
-	{
-		SCATTER = 0,
-		CHERRY = 1,
-		LEMON = 2,
-		ORANGE = 3,
-		PLUM = 4,
-		GRAPES = 5,
-		WATERLEMON = 6,
-		SEVEN = 7,
+// static constexpr double Rates[NR_COLUMN][NR_SYMBOLS] = {
+// //Scattrr/Cherry/lemon/orange//plum//grape/waterm/seven
+// {     0,     0,    0,      0, 	  0,     0,     0,   0    },//x1
+// {     0,  0.25,    0,      0,     0,     0,     0,   0    },//2
+// {  2.00,  1.00, 1.00,   1.00,  1.00,  2.50,  2.50, 	 5.00 },//x3
+// { 10.00,  2.50, 2.50,   2.50,  2.50, 10.00, 10.00,  50.00 },//x4
+// { 50.00, 10.00, 10.00, 10.00, 10.00, 25.00, 25.00, 250.00 } //x5
+// };
+	static constexpr int Rates[NR_COLUMN][NR_SYMBOLS] = {
+// Scattrr/Cherry/lemon/orange//plum//grape/waterm/seven
+		{0, 0, 0, 0, 0, 0, 0, 0},		  // x1
+		{0, 25, 0, 0, 0, 0, 0, 0},		  // 2
+		{200, 100, 100, 100, 100, 250, 250, 500},		  // x3
+		{1000, 250, 250, 250, 250, 1000, 1000, 5000},	  // x4
+		{5000, 1000, 1000, 1000, 1000, 2500, 2500, 25000} // x5
 	};
-static constexpr double Rates[5][8] = {
-//Scattrr/Cherry/lemon/orange//plum//grape/waterm/seven
-{     0,     0,    0,      0, 	  0,     0,     0,   0    },//x1
-{     0,  0.25,    0,      0,     0,     0,     0,   0    },//2
-{  2.00,  1.00, 1.00,   1.00,  1.00,  2.50,  2.50, 	 5.00 },//x3
-{ 10.00,  2.50, 2.50,   2.50,  2.50, 10.00, 10.00,  50.00 },//x4
-{ 50.00, 10.00, 10.00, 10.00, 10.00, 25.00, 25.00, 250.00 } //x5
-};
 
 	static constexpr bool CheckLineWin[NR_PAY_LINE][NR_ROW][NR_COLUMN] =
 	{
@@ -157,6 +165,7 @@ static constexpr double Rates[5][8] = {
 	}; 
 	static constexpr int PayLine[NR_PAY_LINE][NR_COLUMN] =
 	{
+		{0,0,0,0,0},//0
 		{2,2,2,2,2},//1
 		{1,1,1,1,1},//2
 		{3,3,3,3,3},//3

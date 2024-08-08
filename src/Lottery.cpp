@@ -18,7 +18,7 @@ void Lottery::setValueVector(int Sign, int numberTick, int numberRolls)
 		volatilit[numberRolls].push_back(Sign);
 		
 #ifdef DEBUG 
-	cout << "Ilosc " << Sign << " to : " << NumberTick << "\n";
+	cout << "Ilosc " << Sign << " to : " << numberTick << "\n";
 #endif
 }
 
@@ -47,7 +47,7 @@ void Lottery::startLottery()
 
 		lotteryResultTab[j][i] = value;
 #ifdef DEBUG 
-		cout << "Tabela : " << tab[j][i] << "\n";
+		cout << "Tabela : " << lotteryResultTab[j][i] << "\n";
 #endif
 	}
 #ifdef DEBUG 

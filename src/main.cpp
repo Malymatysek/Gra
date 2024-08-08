@@ -21,12 +21,6 @@ void headText()
     cout << "Modu: slotGameSimulator (wersja 1.0)" << endl;
     cout << endl;
 }
-void end()
-{
-    system("pause");
-    // system("cls");
-    cout << "\x1B[2J\x1B[H";
-}
 inline void wait_on_enter()
 {
     std::string dummy;
@@ -38,16 +32,16 @@ int main(int argc, char *argv[])
     srand ( time(0) );
     Game start;
     fstream plik; 
-    vector<int> tab;
+    // vector<int> tab;
     int loop = 0;
     bool exit = false;
-    int gamesCount = 10;
+    int gamesCount = 10000;
     int startCredit = 10000;
     string creditOutFile = "plik.txt";
     
     headText();
 
-    start.setRate(20);
+    start.setRate(100); 
     start.setLoopGames(gamesCount);
     start.setStartMoney(startCredit);
     plik.clear();
@@ -62,19 +56,20 @@ int main(int argc, char *argv[])
         if (strcmp(argv[i], "-creditOutFile") == 0 && i + 1 < argc) {
             creditOutFile = argv[i + 1];
         }
-        if (strcmp(argv[i], "-symbols") == 0 && i + 1 < argc) {
-            tab.push_back(atoi(argv[i + 1]));
-        } 
+        // if (strcmp(argv[i], "-symbols") == 0 && i + 1 < argc) {
+        //     tab.push_back(atoi(argv[i + 1]));
+        // } 
     }
-    if(tab.max_size()>0){
+    // if(tab.max_size() > 0 ) 
+    //{
+    // cout << "TabelaConvert\n ";
+	// for (int i = 0; i < 15; i++) {
+	// 	if (i == 5 || i == 10)
+	// 		printf("\n");
+	// 	cout << tab[i]<<", ";
+	// }
+    // }
 
-    cout << "TabelaConvert\n ";
-	for (int i = 0; i < 15; i++) {
-		if (i == 5 || i == 10)
-			printf("\n");
-		cout << tab[i]<<", ";
-	}
-    }
     //tu kod usuwający zawartosc plik.txt
     plik.open(creditOutFile, ios::out | ios::trunc);
     if (plik) {
@@ -83,23 +78,23 @@ int main(int argc, char *argv[])
         cerr << "Nie można otworzyć pliku do usunięcia zawartości!" << endl;
         return 1; // Wychodzi z programu, jeśli nie udało się otworzyć pliku
     }
-//
+
 
     plik.open(creditOutFile, ios::out | ios::app);
     if (plik.good())
     {
         for (int i = 0; i < gamesCount; i++)
         {
-            if(/*statycznaTablica*/false)
-            {
-                start.staticTabCheck(tab);
-            }
-            else
+            // if(/*statycznaTablica*/false)
+            // {
+            //     start.staticTabCheck(tab);
+            // }
+            // else
 
             start.checkResultGame() ;
 
-            plik << "Liczba gier["<<i<<"] " 
-                 << " posiadany kredyt : " << start.getStartMoney() << endl ;       
+            plik << "Losowanie numer ["<<i<<"] wygrana : " << start.getMoney() <<
+                  " : posiadany kredyt : " << start.getStartMoney() << endl ;       
         }
         plik.close();
     }
@@ -107,28 +102,20 @@ int main(int argc, char *argv[])
     {
         cerr << "Nie można otworzyć pliku!" << endl;
     }
-    
-    
-    
 
-  
-    // start.showWinLine(); 
-
-    while (!exit)
-    {
-            // int *symbol;
-            // symbolWin( &symbol)
-            // symbol <- winSYmbol
-        start.startLottery(); // losowanie 
-
-        start.showLotteryResult();  // rysowanie     
-
-        start.checkResultGame();    // sprawdzanie
-
-        start.clear();
-        start.getLoopGame() < loop ? exit = true : loop++;
-        wait_on_enter();
-    }
+     start.showStats();
+    // while (!exit)
+    // {
+    //     // int *symbol;
+    //     // symbolWin( &symbol)
+    //     // symbol <- winSYmbol
+    //     // start.startLottery(); // losowanie 
+    //     // start.showLotteryResult();  // rysowanie     
+    //     // start.checkResultGame();    // sprawdzanie
+    //     // start.clear();
+    //     // start.getLoopGame() < loop ? exit = true : loop++;
+    //     wait_on_enter();
+    // }
 
     printf("\n\nKoniec\n");
     return 0;
