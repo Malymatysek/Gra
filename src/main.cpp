@@ -1,7 +1,7 @@
 /*
  * main.cpp
  *
- *  Created on: 1 sie 2024
+ *  Created on: 2 sie 2024
  *      Author: Matys
  */
 #include <iostream>
@@ -9,10 +9,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "Game.h"
-// #define DEBUG
 
 using namespace std;
-
 
 void headText()
 {
@@ -30,22 +28,16 @@ inline void wait_on_enter()
 int main(int argc, char *argv[])
 {  
     srand ( time(0) );
+
     Game start;
     fstream plik; 
+
     // vector<int> tab;
-    int loop = 0;
-    bool exit = false;
-    int gamesCount = 10000;
-    int startCredit = 10000;
+    // int loop = 0;
+    // bool exit = false;
+    int gamesCount = 100000;
+    int startCredit = 5000000;
     string creditOutFile = "plik.txt";
-    
-    headText();
-
-    start.setRate(100); 
-    start.setLoopGames(gamesCount);
-    start.setStartMoney(startCredit);
-    plik.clear();
-
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-gamesCount") == 0 && i + 1 < argc) {
             gamesCount = atoi(argv[i + 1]);
@@ -60,7 +52,14 @@ int main(int argc, char *argv[])
         //     tab.push_back(atoi(argv[i + 1]));
         // } 
     }
-    // if(tab.max_size() > 0 ) 
+    
+    headText();
+
+    start.setRate(100); 
+    start.setLoopGames(gamesCount);
+    start.setStartMoney(startCredit);
+  
+    // if(tab.size() > 0 ) 
     //{
     // cout << "TabelaConvert\n ";
 	// for (int i = 0; i < 15; i++) {
@@ -79,7 +78,6 @@ int main(int argc, char *argv[])
         return 1; // Wychodzi z programu, jeśli nie udało się otworzyć pliku
     }
 
-
     plik.open(creditOutFile, ios::out | ios::app);
     if (plik.good())
     {
@@ -92,9 +90,12 @@ int main(int argc, char *argv[])
             // else
 
             start.checkResultGame() ;
-
-            plik << "Losowanie numer ["<<i<<"] wygrana : " << start.getMoney() <<
-                  " : posiadany kredyt : " << start.getStartMoney() << endl ;       
+        
+            plik << "Lottery NR, "<<i
+                //  << ",wygrana ," << start.getMoney() 
+                 <<",Money, " << start.getStartMoney() 
+                 << endl ; 
+                        
         }
         plik.close();
     }
@@ -103,20 +104,12 @@ int main(int argc, char *argv[])
         cerr << "Nie można otworzyć pliku!" << endl;
     }
 
-     start.showStats();
-    // while (!exit)
-    // {
-    //     // int *symbol;
-    //     // symbolWin( &symbol)
-    //     // symbol <- winSYmbol
-    //     // start.startLottery(); // losowanie 
-    //     // start.showLotteryResult();  // rysowanie     
-    //     // start.checkResultGame();    // sprawdzanie
-    //     // start.clear();
-    //     // start.getLoopGame() < loop ? exit = true : loop++;
-    //     wait_on_enter();
-    // }
+    //resultLottery
+    start.showResult();
+    cout<<endl<<endl;
+    start.showStats();
 
     printf("\n\nKoniec\n");
     return 0;
 }
+

@@ -1,5 +1,10 @@
+/*
+ * LogicGame.cpp
+ *
+ *  Created on: 5 sie 2024
+ *      Author: Matys
+ */
 #include "LogicGame.h"
-
 
 LogicGame::LogicGame()
 {
@@ -7,25 +12,25 @@ LogicGame::LogicGame()
         for (int j = 0; j < 2; j++)
             tabWin[i][j] = 0;
 }
-//--------------------------------------
+//---------------------------------------------
 void LogicGame::oneLotteryResult()
-//--------------------------------------
+//---------------------------------------------
 {
-    Lottery::startLottery();            //losowanie
+    Lottery::startLottery();            
     for (int i = 0; i < NR_PAY_LINE; i++)
     {
         if( i == 0 )
         {
-            checkScatter();             //szukanie scatter
+            checkScatter();             
         }
         else
         {
 
-            checkPayLine(i);            //przeglad wyszskich lini wygrywajacych
+            checkPayLine(i);            
         }
     }      
 }
-//--------------------------------------
+//-----------------------------------------------
 void LogicGame::staticTabCheck(vector<int> tab)
 {//podaj vector statycznego losowania size[15]
 for (int i = 0; i < 3; i++)
@@ -41,12 +46,12 @@ for (int i = 0; i < 3; i++)
     {
         if( i == 0 )
         {
-            checkScatter();      //szukanie scatter
+            checkScatter();      
         }
         else
         {
 
-            checkPayLine(i);            //przeglad wyszskich lini wygrywajacych
+            checkPayLine(i);    
         }
     }     
 }
@@ -57,7 +62,7 @@ void LogicGame::checkScatter()
     {
         for (int j = 0; j < NR_ROW; j++)
         {
-                if (lotteryResultTab[i][j] == 0) 
+                if (SIGN::SCATTER == lotteryResultTab[i][j]) 
                 {
                     scatterNr++;
                     break;
@@ -69,7 +74,7 @@ void LogicGame::checkScatter()
     tabWin[0][1]= scatterNr;
     tabWin[0][2]= getMoneyLine(0,scatterNr);
 
-#ifdef DEBUG 
+#ifdef DEBUG_LOGIC 
     cout << "Tab[" << 0 << "]Sign = " << tabWin[0][0] << "\n";
     cout << "Tab[" << 0 << "]   X = " << tabWin[0][1] << "\n";
     cout << "Tab[" << 0 << "] Win = " << tabWin[0][2] << "\n";
@@ -105,68 +110,21 @@ void LogicGame::checkPayLine(int iterator)
     tabWin[iterator][1] = multiplier+1;
     tabWin[iterator][2] = getMoneyLine(paySign,multiplier);
 
-#ifdef DEBUG 
-    // cout << "Tab[" << iterator << "]Sign = " << tabWin[iterator][0] << "/100\n";
-    // cout << "Tab[" << iterator << "]   X = " << tabWin[iterator][1] << "/100\n";
-    // cout << "Tab[" << iterator << "] Win = " << tabWin[iterator][2] << "/100\n";
+#ifdef DEBUG_LOGIC 
+    cout << "Tab[" << iterator << "]Sign = " << tabWin[iterator][0] << "/100\n";
+    cout << "Tab[" << iterator << "]   X = " << tabWin[iterator][1] << "/100\n";
+    cout << "Tab[" << iterator << "] Win = " << tabWin[iterator][2] << "/100\n";
    #endif
 }
 double LogicGame::getMoneyLine(int symbol_win, int multiplier_win) 
 {
-    #ifdef DEBUG 
+#ifdef DEBUG_LOGIC 
     if(Rates[multiplier_win][symbol_win] > 0)
     cout << "Wygrana ? result"<< Rates[multiplier_win][symbol_win] << " /100\n";
-   #endif
+#endif
     
-
     return Rates[multiplier_win][symbol_win];
 }
-// void LogicGame::checkPayLine(int iterator)
-// {
-//     int paySign;
-//     int multiplier;
-//     for (int i = 0; i < 5; i++)
-//     {
-//          if (i == 0)
-//          {
-//              paySign = lotteryResultTab[i][PayLine[iterator][i] - 1]; // win place in first roll
-//              multiplier = i + 1;
-//          }
-//          else
-//          {
-//              if (paySign == lotteryResultTab[i][PayLine[iterator][i] - 1])// next sign is the same?
-//              {
-//                  multiplier = i + 1; // win
-//              }
-//              else
-//              {
-//                  break;     // end
-//              }
-//          }
-//     }
-//     tabWin[iterator][0] = paySign;
-//     tabWin[iterator][1] = multiplier;
-// #ifdef DEBUG 
-//     cout << "Tab[" << iterator << "] = " << paySign << "\n";
-//     cout << "Tab[" << iterator << "] = " << multiplier << "\n";
-//    #endif
-// }
-// void LogicGame::showWinLine()
-// {
-//    for (int i = 0; i < 20; ++i)
-//     {
-//         for (int k = 0; k < 5; ++k)
-//             {                
-//                 if (PayLine[i][k] == 0)
-//                 {
-//                     cout << PayLine[i][k] << " ";
-//                 }
-//                 else
-//                     cout << "\033[41m" << PayLine[i][k] << " ";
-//                     cout << "\033[0m";
-//             }
-//     } 
-// }
 void LogicGame::showWinLine()
 {
     for (int i = 0; i < 20; ++i)
@@ -181,8 +139,10 @@ void LogicGame::showWinLine()
                     cout << CheckLineWin[i][j][k] << " ";
                 }
                 else
+                {
                     cout << "\033[41m" << CheckLineWin[i][j][k] << " ";
                     cout << "\033[0m";
+                }
             }
             cout << "\n";
         }
