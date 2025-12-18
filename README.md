@@ -1,1 +1,1 @@
-prosta logiga do gry 777
+prosta logika do gry 777
